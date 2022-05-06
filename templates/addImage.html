@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{msg}}
+<form action="/fillDb" method="POST" enctype="multipart/form-data">
+    <label for="code">enter the product code</label><br>
+    <input type="number" id="code" name="code"><br>
+    <label for="name">name of the brand</label><br>
+    <input type="text" id="name" name="name"><br>
+    <label for="image">ADD THE IMAGE</label><br>
+    <input type="file" id="image" name="image"><br>
+    <label for="category">THE Category of the product</label><br>
+    <input type="text" id="category" name="category"><br>
+    <label for="price">enter the price</label><br>
+    <input type="number"  id="price" name="price"><br>
+    <label for="discount">Allowed discount</label><br>
+    <input type="number" id="discount" name="discount"><br>
+    <button type="submit">CLick to add data to the database</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping cart  using python flask frame work</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+ <section class="our-publication pt-100 pd-70">
+     <div class="container">
+         <div class="section-header">
+             <i class="fa fa-book"></i>
+             <h2>OUR PRODUCT</h2>
+             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet at beatae, corporis cupiditate dignissimos dolor esse excepturi ipsam libero minus nesciunt officia omnis quaerat quasi, recusandae rem sapiente, tenetur vel.</p>
+         </div>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-sm-6 col-lg-3">
+                <form method="post" action="/add">
+                    <div class="single-publication">
+                        <figure style="width:263px;">
+                            <a href="#">
+                                <img src="/static/images/product-images/{{ product.image }}" >
+                            </a>
+                            <ul>
+                                <li><a href="" title="ADD to Favorite"><i class="fa fa-heart"></i></a></li>
+                                <li><a href=""title="ADD to Compare"><i class="fa fa-refresh"></i></a></li>
+                                <li><a href="" title="Quick view"><i class="fa fa-search"></i></a></li>
+                            </ul>
+                        </figure>
+                    </div>
+                </form>
+
+            </div>
+            {% endfor %}
+        </div>
+
+     </div>
+
+ </section>
+
+</body>
+</html>
