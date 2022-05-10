@@ -2,10 +2,15 @@ from flask import *
 from flaskext.mysql import MySQL
 import pymysql
 from werkzeug.utils import secure_filename
+import os
+
 
 app= Flask(__name__)
-app.secret_key ="kimemiacoding"
+app.secret_key="arandomstringofCharacters"
 mysql= MySQL()
+UPLOAD_PATH="static/uploads/cart"
+ALLOWED_EXTENSIONS ={'jpg','jpeg','png'}
+app.config['UPLOAD_FOLDER']=UPLOAD_PATH #this config was to be used to make sure that the image name is correct in the db
 
 #mysql configarations
 app.config['MYSQL_DATABASE_USER']="root"
@@ -19,12 +24,14 @@ def products():
     try:
         conn=mysql.connect()
         cursor=conn.cursor(pymysql.cursors.DictCursor)
-        cursor.execute( 'Select * from products' )
+        cursor.execute( 'Select * from product' )
         rows=cursor.fetchall()
-        return render_template('products.html',products=row)
+        output=render_template('products.html',products=rows)
     except Exception as e:
         print(e)
     finally:
+        rows = cursor.fetchall()
+        return output
         cursor.close()
         conn.close()
 
@@ -47,8 +54,10 @@ def fillDb():
             conne=mydb()
             cur=conne.cursor()
             sql='insert into product (code,name,image,category,price,discount) values(%s,%s,%s,%s,%s,%s)'
-            cur.execute(sql,(code,name,image,category,price,discount))
+            cur.execute(sql,(code,name,imageFileName,category,price,discount))
             conne.commit()
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'],imageFileName))
+
             if cur.rowcount == +1:
                 return render_template('addImage.html',msg='added succesfully')
             else:
