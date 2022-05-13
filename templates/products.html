@@ -12,6 +12,58 @@
 <body>
  <section class="our-publication pt-100 pd-70">
      <div class="container">
+         <div class="row">
+             <p><h2>SHopping Cart using Python Flask Mysql</h2></p>
+             <div class="col-sm-12">
+                 {% if 'cart_item' in session %}
+                 <p><a id="btnEmpty" href="{{ url_for('.empty_cart') }}" class="btn btn-danger">Empty Cart</a></p>
+                 <table class="table table-hover">
+                     <thead>
+                     <tr>
+                         <th>product</th>
+                         <th>Quantity</th>
+                         <th class="text-center">Unit Price</th>
+                         <th class="text-center">price</th>
+                         <th></th>
+
+                     </tr>
+                     </thead>
+                     <tbody>
+                     {% for key, val in session['cart_item'].items() %}
+                         {% set quantity = session['cart_item'][key]['quantity'] %}
+                         {% set price = session['cart_item'][key]['price'] %}
+                         {% set item_price = session['cart_item'][key]['total_price'] %}
+                       <tr>
+                         <td class="col-sm-8 col-md-6">
+                             <div class="media">
+                                 <a class="thumbnail pull-left" href=""> <img class="media-object" src="/static/uploads/cart/{{ session['cart_item'][key]['image'] }}" style="width:72px;height:72px;"></a>
+                                 <div class="media-body">
+                                     <h4 class="media-heading"><a href="">{{ session['cart_item'][key]['name'] }}</a> </h4>
+                                     <h5 class="media-heading">by <a href="">Brand name</a></h5>
+                                     <span> Status:</span><span class="text-success"><strong> In Stock</strong></span>
+                                 </div>
+                             </div>
+                         </td>
+                         <td class="col-sm-1 col-md-1" style="text-align:center">
+                             <input type="email" class="form-control" value="{{ quantity }}">
+                         </td>
+                         <td class="col-sm-1 col-md-1 text-center"><strong>${{ price }}</strong>  </td>
+                         <td class="col-sm-1 col-md-1 text-center"> <strong>${{ item_price }}</strong></td>
+                         <td class="col-sm-1 col-md-1" >
+                             <a href="{{ url_for('.delete_product', code=session['cart_item'][key]['code']) }}" class="btn btn-danger">
+                             <span class="glyphicon glyphicon-remove"></span>remove
+                             </a>
+                         </td>
+                     </tr>
+                      {% endfor %}
+                     </tbody>
+
+                 </table>
+                 {% else: %}
+                 <div class="no-records">Your Cart is Empty</div>
+                 {% endif %}
+             </div>
+         </div>
          <div class="section-header">
              <i class="fa fa-book"></i>
              <h2>OUR PRODUCT</h2>
@@ -33,6 +85,23 @@
                                 <li><a href="" title="Quick view"><i class="fa fa-search"></i></a></li>
                             </ul>
                         </figure>
+                        <div class="publication-content">
+                            <span class="category">{{ product.category }} </span>
+                            <h3><a href="#">{{ product.name }}</a></h3>
+                            <ul>
+                                <li><i class="iconfont-star"></i></li>
+                                <li><i class="iconfont-star"></i></li>
+                                <li><i class="iconfont-star"></i></li>
+                                <li><i class="iconfont-star"></i></li>
+                                <li><i class="iconfont-star"></i></li>
+                            </ul>
+                            <h4 class="price">$ {{ product.price }}</h4>
+                        </div>
+                        <div class="add-to-cart">
+                            <input type="hidden" name="code" value="{{ product.code }}">
+                            <input type="text" class="product-quantity" name="quantity" value="1" size="2">
+                            <input type="submit" value="Add to Cart" class="default-btn">
+                        </div>
                     </div>
                 </form>
 
@@ -62,7 +131,7 @@
      }
      .section-header h2{
      font-weight:bold;
-     margin:0;
+     margin:0 auto;
      }
      .section-header p{
      max-width:100%;
@@ -70,47 +139,143 @@
      text-align:center;
      }
      .single-publication{
-     border:10px solid #f2eee2;
+     border: 1px solid #f2eee2;
      margin-bottom:30px;
      position:relative;
      overflow:hidden;
+    }
+    .single-publication figure{
+    position:relative;
+    margin:0 auto;
+    text-align:center;
+    }
+    .single-publication figure > a{
+    background-color:#fafafa;
+    display:block;
+    }
+    .single-publication figure ul{
+    list-style-type:none;
+    padding:0;
+    margin:0;
+    position:absolute;
+    right:-120px;
+    top:2px;
+    transition: 120ms;
+    -webkit-transition: 120ms;
+   }
+   .single-publication:hover figure ul{
+   right:15px;
+   }
+   .single-publication figure ul li a{
+   display:inline-block;
+   width:30px;
+   height:30px;
+   text-align:center;
+   font-size:15px;
+   font-style:bold;
+   background:#ff007d;
+   margin-bottom:7px;
+   border-radius:50%;
+   line-height:35px;
+   color:#fff;
+   }
+   .single-publication figure ul li a:hover{
+   color:#fff;
+   background:#e50663;
+   }
+   .single-publication .publication-content .category{
+   display: inline-block;
+   font-family:'open sans',sans-serif;
+   font-size:14px;
+   color:#ff007d;
+   font-weight:600;
+   }
+   .single-publication .publication-content h3{
+   font-weight:600;
+   margin:8px 0 10px;
+   font-size:20px;
+   }
+   .single-publication .publication-content h3 a{
+   color:#1f2d30;
+   }
+   .single-publication .publication-content ul{
+   list-style-type:none;
+   padding:0;
+   margin:0;
+   margin-bottom:15px;
+   }
+   .single-publication .publication-content ul li{
+   display:inline-block;
+   font-size:18px;
+   color:#fec42d;
+   }
+   .single-publication .publication-content price{
+   font-size:18px;
+   color:#ff007d
+   }
+   .single-publication .publication-content .price span{
+   color:#6f6f6f;
+   text-decoration:line-through;
+   padding-left:5px;
+   font-weight:300;
+   }
+   .single-publication .add-to-cart{
+   position:absolute;
+   right:0;
+   bottom:0;
+   left:0;
+   background:#fff;
+   opacity:0;
+   visibility:hidden;
+   text-align:center;
+   -webkit-transform:scale(.7);
+   transform:scale(.7);
+   height:105px;
+   -moz-transition: .4s;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   .single-publication:hover .add-to-cart{
+   visibility:visible;
+   transform:scale(1);
+   -webkit-transform: scale(1);
+   opacity:1;
+   }
+   .single-publication .add-to-cart .default-btn{
+   margin-top: 28px;
+   padding:8px 25px;
+   }
+   .single-publication .add-to-cart .default-btn{
+   margin-top:28px;
+   padding:8px 25px;
+   font-size: 14px;
+   }
+   .single-publication .category{
+   margin:0;
+   }
+   .single-publication .add-to-cart .default-btn {
+   margin-top: 28px;
+   padding:8px 25px;
+   font-size:14px;
+   }
+   .default-btn{
+   background-color:#ff007d;
+   color:#fff;
+   border:1px solid #ff007d;
+   display:inline-block;
+   padding:10px 30px;
+   border-radius:30px;
+   text-transform:uppercase;
+   font-weight:600;
+   font-family:'open sans',sans-serif;
+   }
+   .default btn:hover{
+   color:#fff;
+   text-decoration:none;
+   }
 
-     }
-     .single-publication figure {
-     position:relative;
-     margin:0;
-     text-align:center;
-     }
-     .single-publication figure > a{
-     background-colour:#fafafa;
-     display:inline block;
-     border: 1px solid:#ff007d;
-     }
-     .single-publication figure ul{
-     list-style-type: none;
-     padding:0;
-     margin: 0;
-     position:absolute;
-     right: -50px;
-     top: 20px
-     transition: .6s;
-       }
-     .single-publication figure ul li a{
-     display:inline-block;
-     width: 35px;
-     height:35px;
-     text-align:center;
-     font-size:15px;
-     background:#ff007d;
-     margin-bottom:7px;
-     border-radius:50%;
-     line-height:35px;
-     color: #fff;
 
-     }
-     .single publication figure ul li a:hover{
-     color:#fff;
-     background: #e50663;}
+
  </style>
 
 </body>
