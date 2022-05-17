@@ -23,15 +23,16 @@ mysql.init_app(app)
 
 @app.route('/add', methods=['POST'])
 def add_product_to_cart():
+    global output
     cursor = None
     try:
         _quantity = int(request.form['quantity'])
         _code = request.form['code']
         # validate the received values
-        if _quantity and _code and request.method == 'POST':
+        if _quantity and _code  and request.method == 'POST':
             conn = mysql.connect()
             cursor = conn.cursor(pymysql.cursors.DictCursor)
-            cursor.execute("SELECT * FROM product WHERE code=%s", _code)
+            cursor.execute("SELECT * FROM product WHERE code=%s and category=%s", _code)
             row = cursor.fetchone()
 
             itemArray = {
@@ -66,12 +67,13 @@ def add_product_to_cart():
             session['all_total_quantity'] = all_total_quantity
             session['all_total_price'] = all_total_price
 
-            return redirect(url_for('.products'))
+            output =redirect(url_for('.products'))
         else:
             return 'Error while adding item to cart'
     except Exception as e:
         print(e)
     finally:
+        return output
         cursor.close()
         conn.close()
 

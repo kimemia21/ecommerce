@@ -40,13 +40,14 @@
      {% set quantity = session['cart_item'][key]['quantity'] %}
      {% set price = session['cart_item'][key]['price'] %}
      {% set item_price = session['cart_item'][key]['total_price'] %}
+     {% set category =session['cart_item'][key]['category] %}
                     <tr>
                         <td class="col-sm-8 col-md-6">
                         <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="/static/images/product-images/{{ session['cart_item'][key]['image'] }}" style="width: 72px; height: 72px;"> </a>
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="/static/uploads/cart/{{ session['cart_item'][key]['image'] }}" style="width: 72px; height: 72px;"> </a>
                             <div class="media-body">
                                 <h4 class="media-heading"> <a href="#">{{ session['cart_item'][key]['name'] }}</a></h4>
-                                <h5 class="media-heading"> by <a href="#">Brand name</a></h5>
+                                <h5 class="media-heading"> by <a href="#">{{ session['cart_item'][key]['category'] }}</a></h5>
                                 <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
                             </div>
                         </div></td>
@@ -82,7 +83,7 @@
                 </tbody>
             </table>
   {% else: %}
-   <div class="no-records">Your Cart is Empty</div>
+   <div class="no-records badge badge-warning">Your Cart is Empty</div>
   {% endif %}
         </div>
     </div>
@@ -101,7 +102,7 @@
                     <div class="col-sm-6 col-lg-3">
       <form method="post" action="/add">
                         <div class="single-publication">
-                            <figure style="width:50px;">
+                            <figure style="width:100%;">
                                 <a href="#">
                                     <img style="height:300px; width:300px;" src="/static/uploads/cart/{{ product.image }}">
                                 </a>
@@ -139,170 +140,168 @@
             </div>
         </section>
 <style>
-.pt-100 {
-                padding-top: 100px;
-            }
-            .pb-70 {
-                padding-bottom: 70px;
-            }
-            .section-header {
-                margin-bottom: 60px;
-                text-align: center;
-            }
-            .section-header i {
-                color: #ff007d;
-                font-size: 50px;
-                display: inline-block;
-                margin-bottom: 10px;
-            }
-            .section-header h2 {
-                font-weight: bold;
-                font-size: 34px;
-                margin: 0;
-            }
-            .section-header p {
-                max-width: 500px;
-                margin: 20px auto 0;
-            }
-            .single-publication {
-                border: 1px solid #f2eee2;
-                margin-bottom: 30px;
-                position: relative;
-                overflow: hidden;
-            }
-            .single-publication figure {
-                position: relative;
-                margin: 0;
-                text-align: center;
-            }
-            .single-publication figure > a {
-                background-color: #fafafa;
-                height:50px;
-                display: block;
-            }
-            .single-publication figure ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-                position: absolute;
-                right: -50px;
-                top: 20px;
-                transition: .6s;
-                -webkit-transition: .6s;
-            }
-            .single-publication:hover figure ul {
-                right: 15px;
-            }
-            .single-publication figure ul li a {
-                display: inline-block;
-                width: 35px;
-                height: 35px;
-                text-align: center;
-                font-size: 15px;
-                background: #ff007d;
-                margin-bottom: 7px;
-                border-radius: 50%;
-                line-height: 35px;
-                color: #fff;
-            }
-            .single-publication figure ul li a:hover {
-                color: #fff;
-                background: #e50663;
-            }
-            .single-publication .publication-content {
-                text-align: center;
-                padding: 20px;
-            }
-            .single-publication .publication-content .category {
-                display: inline-block;
-                font-family: 'Open Sans', sans-serif;
-                font-size: 14px;
-                color: #ff007d;
-                font-weight: 600;
-            }
-            .single-publication .publication-content h3 {
-                font-weight: 600;
-                margin: 8px 0 10px;
-                font-size: 20px;
-            }
-            .single-publication .publication-content h3 a {
-                color: #1f2d30;
-            }
-            .single-publication .publication-content h3 a:hover {
-                color: #ff007d;
-            }
-            .single-publication .publication-content ul {
-                list-style-type: none;
-                padding: 0;
-                margin: 0;
-                margin-bottom: 15px;
-            }
-            .single-publication .publication-content ul li {
-                display: inline-block;
-                font-size: 18px;
-                color: #fec42d;
-            }
-            .single-publication .publication-content .price {
-                font-size: 18px;
-                color: #ff007d;
-            }
-            .single-publication .publication-content .price span {
-                color: #6f6f6f;
-                text-decoration: line-through;
-                padding-left: 5px;
-                font-weight: 300;
-            }
-            .single-publication .add-to-cart {
-                position: absolute;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                background: #fff;
-                opacity: 0;
-                visibility: hidden;
-                text-align: center;
-                -webkit-transform: scale(.7);
-                transform: scale(.7);
-                height: 105px;
-                -moz-transition: .4s;
-                -webkit-transition: .4s;
-                transition: .4s;
-            }
-            .single-publication:hover .add-to-cart {
-                visibility: visible;
-                transform: scale(1);
-                -webkit-transform: scale(1);
-                opacity: 1;
-            }
-            .single-publication .add-to-cart .default-btn {
-                margin-top: 28px;
-                padding: 8px 25px;
-                font-size: 14px;
-            }
-            .single-publication .category {
-                margin: 0;
-            }
-            .single-publication .add-to-cart .default-btn {
-                margin-top: 28px;
-                padding: 8px 25px;
-                font-size: 14px;
-            }
-            .default-btn {
-                background-color: #ff007d;
-                color: #fff;
-                border: 1px solid #ff007d;
-                display: inline-block;
-                padding: 10px 30px;
-                border-radius: 30px;
-                text-transform: uppercase;
-                font-weight: 600;
-                font-family: 'Open Sans', sans-serif;
-            }
-            .default-btn:hover {
-                color: #fff;
-                text-decoration: none;
-            }
+        .pt-100{
+     padding-top: 100px;
+     }
+     .pt-70{
+     padding-bottom:70px;
+     }
+     .section-header{
+     margin-bottom:60px;
+     text-align:center;
+    }
+     .section-header i{
+      color:#ff007d;
+     font-size:50px;
+     display: inline-block;
+     margin-bottom:10px;
+     }
+     .section-header h2{
+     font-weight:bold;
+     margin:0 auto;
+     }
+     .section-header p{
+     max-width:100%;
+     margin:40px auto:0;
+     text-align:center;
+     }
+     .single-publication{
+     border: 1px solid #f2eee2;
+     margin-bottom:30px;
+     position:relative;
+     overflow:hidden;
+    }
+    .single-publication figure{
+    position:relative;
+    margin:0 auto;
+    text-align:center;
+    }
+    .single-publication figure > a{
+    background-color:#fafafa;
+    display:block;
+    }
+    .single-publication figure ul{
+    list-style-type:none;
+    padding:0;
+    margin:0;
+    position:absolute;
+    right:-120px;
+    top:2px;
+    transition: 120ms;
+    -webkit-transition: 120ms;
+   }
+   .single-publication:hover figure ul{
+   right:15px;
+   }
+   .single-publication figure ul li a{
+   display:inline-block;
+   width:30px;
+   height:30px;
+   text-align:center;
+   font-size:15px;
+   font-style:bold;
+   background:#ff007d;
+   margin-bottom:7px;
+   border-radius:50%;
+   line-height:35px;
+   color:#fff;
+   }
+   .single-publication figure ul li a:hover{
+   color:#fff;
+   background:#e50663;
+   }
+   .single-publication .publication-content .category{
+   display: inline-block;
+   font-family:'open sans',sans-serif;
+   font-size:14px;
+   color:#ff007d;
+   font-weight:600;
+   }
+   .single-publication .publication-content h3{
+   font-weight:600;
+   margin:8px 0 10px;
+   font-size:20px;
+   }
+   .single-publication .publication-content h3 a{
+   color:#1f2d30;
+   }
+   .single-publication .publication-content ul{
+   list-style-type:none;
+   padding:0;
+   margin:0;
+   margin-bottom:15px;
+   }
+   .single-publication .publication-content ul li{
+   display:inline-block;
+   font-size:18px;
+   color:#fec42d;
+   }
+   .single-publication .publication-content price{
+   font-size:18px;
+   color:#ff007d
+   }
+   .single-publication .publication-content .price span{
+   color:#6f6f6f;
+   text-decoration:line-through;
+   padding-left:5px;
+   font-weight:300;
+   }
+   .single-publication .add-to-cart{
+   position:absolute;
+   right:0;
+   bottom:0;
+   left:0;
+   background:#fff;
+   opacity:0;
+   visibility:hidden;
+   text-align:center;
+   -webkit-transform:scale(.7);
+   transform:scale(.7);
+   height:105px;
+   -moz-transition: .4s;
+   -webkit-transition: .4s;
+   transition: .4s;
+   }
+   .single-publication:hover .add-to-cart{
+   visibility:visible;
+   transform:scale(1);
+   -webkit-transform: scale(1);
+   opacity:1;
+   }
+   .single-publication .add-to-cart .default-btn{
+   margin-top: 28px;
+   padding:8px 25px;
+   }
+   .single-publication .add-to-cart .default-btn{
+   margin-top:28px;
+   padding:8px 25px;
+   font-size: 14px;
+   }
+   .single-publication .category{
+   margin:0;
+   }
+   .single-publication .add-to-cart .default-btn {
+   margin-top: 28px;
+   padding:8px 25px;
+   font-size:14px;
+   }
+   .default-btn{
+   background-color:#ff007d;
+   color:#fff;
+   border:1px solid #ff007d;
+   display:inline-block;
+   padding:10px 30px;
+   border-radius:30px;
+   text-transform:uppercase;
+   font-weight:600;
+   font-family:'open sans',sans-serif;
+   }
+   .default btn:hover{
+   color:#fff;
+   text-decoration:none;
+   }
+
+
 </style>
 </body>
-</html>
 </html>
