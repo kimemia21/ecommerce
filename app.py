@@ -65,13 +65,12 @@ def add_product_to_cart():
 
             session['all_total_quantity'] = all_total_quantity
             session['all_total_price'] = all_total_price
-            output = redirect(url_for('.products'))
+            return redirect(url_for('.products'))
 
 
         else:
             return 'Error while adding item to cart'
     finally:
-        return output
         cursor.close()
         conn.close()
 
