@@ -23,7 +23,6 @@ mysql.init_app(app)
 
 @app.route('/add', methods=['POST'])
 def add_product_to_cart():
-    global output
     cursor = None
     try:
         _quantity = int(request.form['quantity'])
@@ -66,16 +65,18 @@ def add_product_to_cart():
 
             session['all_total_quantity'] = all_total_quantity
             session['all_total_price'] = all_total_price
+            output = redirect(url_for('.products'))
 
-            output =redirect(url_for('.products'))
+
         else:
             return 'Error while adding item to cart'
-    except Exception as e:
-        print(e)
     finally:
         return output
         cursor.close()
         conn.close()
+
+
+
 
 
 @app.route('/')
@@ -85,12 +86,14 @@ def products():
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         cursor.execute("SELECT * FROM product")
         rows = cursor.fetchall()
-        return render_template('products.html', products=rows)
+
+
     except Exception as e:
         print(e)
     finally:
-        cursor.close()
-        conn.close()
+        output = render_template('products.html', products=rows)
+        return output
+
 
 
 @app.route('/empty')
